@@ -1,0 +1,47 @@
+name:            aivikasim-experiment-provider-distributed
+version:         0.1
+synopsis:        Simulation experiment data provider for distributed simulation
+description:
+    It allows providing with the results of distributed simulation experiments [1].
+    .
+    \[1] <http://www.aivikasoft.com/aivikasim/aivikasim-experiment>
+    .
+category:        Simulation
+license:         AllRightsReserved
+license-file:    LICENSE
+copyright:       (c) 2017. David Sorokin <david.sorokin@gmail.com>
+author:          David Sorokin
+maintainer:      David Sorokin <david.sorokin@gmail.com>
+homepage:        http://www.aivikasoft.com/en/products/aivikasim.html
+cabal-version:   >= 1.6
+build-type:      Simple
+tested-with:     GHC == 8.0.2
+
+extra-source-files:  tests/MachRep1SimpleSqlite3.hs
+                     tests/MachRep2Sqlite3.hs
+
+library
+
+    exposed-modules: Simulation.Aivika.Experiment.Distributed.Provider
+
+    build-depends:   base >= 3 && < 6,
+                     mtl >= 1.1.0.2,
+                     array >= 0.3.0.0,
+                     time >= 1.5.0.1,
+                     exceptions >= 0.8.0.2,
+                     distributed-process >= 0.6.1,
+                     aivikasim >= 1.0,
+                     aivikasim-transformers >= 1.0,
+                     aivikasim-experiment >= 0.1,
+                     aivikasim-experiment-provider >= 0.1,
+                     aivikasim-distributed >= 0.1
+
+    extensions:      MultiParamTypeClasses,
+                     TypeFamilies
+
+    ghc-options:     -O2
+
+source-repository head
+
+    type:     git
+    location: https://github.com/dsorokin/aivikasim-experiment-provider-distributed
