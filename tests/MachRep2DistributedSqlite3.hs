@@ -275,7 +275,9 @@ runSlaveModel :: (DP.ProcessId, DP.ProcessId) -> DP.Process (DP.ProcessId, DP.Pr
 runSlaveModel (timeServerId, masterId) =
   runDIO m ps timeServerId
   where
-    ps = defaultDIOParams { dioLoggingPriority = WARNING }
+    ps = defaultDIOParams { dioLoggingPriority = NOTICE,
+                            dioProcessMonitoringEnabled = True,
+                            dioProcessReconnectingEnabled = True }
     m  = do registerDIO
             runSimulation (slaveModel masterId) specs
             unregisterDIO
@@ -292,7 +294,9 @@ remotable ['startSlaveModel, 'curryTimeServer]
 
 executeMasterModel :: DP.ProcessId -> DIO () -> DP.Process (DP.ProcessId, DP.Process ())
 executeMasterModel timeServerId simulation =
-  do let ps = defaultDIOParams { dioLoggingPriority = WARNING }
+  do let ps = defaultDIOParams { dioLoggingPriority = NOTICE,
+                                 dioProcessMonitoringEnabled = True,
+                                 dioProcessReconnectingEnabled = True }
          m =
            do registerDIO
               simulation
@@ -323,7 +327,9 @@ master = \backend nodes ->
      let provider = ExperimentProvider aggregator (Just experimentId)
      forM_ [1..experimentRunCount experiment] $ \runIndex ->
        do let n = 2
-              timeServerParams = defaultTimeServerParams { tsLoggingPriority = DEBUG }
+              timeServerParams = defaultTimeServerParams { tsLoggingPriority = DEBUG,
+                                                           tsProcessMonitoringEnabled = True,
+                                                           tsProcessReconnectingEnabled = True }
           timeServerId <- DP.spawn n0 ($(mkClosure 'curryTimeServer) (3 :: Int, timeServerParams))
           (masterId, masterProcess) <- runMasterModel timeServerId n provider runIndex
           DP.send masterId (MonitorProcessMessage timeServerId)
