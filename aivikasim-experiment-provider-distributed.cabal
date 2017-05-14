@@ -18,7 +18,10 @@ build-type:      Simple
 tested-with:     GHC == 8.0.2
 
 extra-source-files:  tests/MachRep1SimpleSqlite3.hs
+                     tests/MachRep2DistributedSqlite3.hs
                      tests/MachRep2Sqlite3.hs
+                     tests/SimpleLocalnetHelper.hs
+                     tests/cluster.conf
 
 library
 
